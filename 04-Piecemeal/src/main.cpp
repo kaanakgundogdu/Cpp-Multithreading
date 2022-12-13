@@ -93,7 +93,6 @@ int Do_Smaller_Sets() {
     timer.Mark();
     constexpr const int subset_size = DATA_SIZE / 10'000;
 
-    int grand_total = 0;
     for (size_t i = 0; i < DATA_SIZE; i+= subset_size)
     {
         for (size_t j = 0; j < 4; j++)
@@ -101,12 +100,10 @@ int Do_Smaller_Sets() {
             workers.push_back(std::jthread{ ProcessDataSet, std::span( &datasets[j][i], subset_size), std::ref(sum[j].value)});
         }
         workers.clear();
-        grand_total = sum[0].value + sum[1].value + sum[2].value + sum[3].value;
-
     }
     const auto time_passed = timer.Peek();
     std::cout << "Processing datasets took " << time_passed << " seconds" << std::endl;
-    std::cout << "Sum of the all element is " << grand_total<< std::endl;
+    std::cout << "Sum of the all element is " << (sum[0].value + sum[1].value + sum[2].value + sum[3].value) << std::endl;
 
     return 0;
 }
